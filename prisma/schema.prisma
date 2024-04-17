@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Games {
+  game_id          Int                @id @default(autoincrement())
+  game_name        String
+  game_image_url   String
+  game_price Float
+  createdAt        DateTime           @default(now())
+  updateDate       DateTime           @updatedAt
+  Games_price      Games_price[]
+  Games_categories Games_categories[]
+}
+
+model Games_price {
+  game_price_id Int             @id @default(autoincrement())
+  game_price    Float
+  createdAt     DateTime        @default(now())
+  game_eneba_url   String
+  game_isActive    Boolean      @default(true)
+  country_id    Int
+  game_id       Int
+  timeframe_id  Int
+  country       Country         @relation(fields: [country_id], references: [country_id])
+  game          Games           @relation(fields: [game_id], references: [game_id])
+  timeframe     Games_timeframe @relation(fields: [timeframe_id], references: [timeframe_id])
+}
+
+model Games_timeframe {
+  timeframe_id          Int           @id @default(autoincrement())
+  timeframe_description String
+  Games_price           Games_price[]
+}
+
+model Categories {
+  category_id       Int                @id @default(autoincrement())
+  category_name     String
+  createdAt         DateTime           @default(now())
+  updateDate        DateTime           @updatedAt
+  category_isActive Boolean            @default(true)
+  Games_categories  Games_categories[]
+}
+
+model Games_categories {
+  games_categories_id Int        @id @default(autoincrement())
+  game_id             Int
+  categorye_id        Int
+  createdAt           DateTime   @default(now())
+  updateDate          DateTime   @updatedAt
+  game                Games      @relation(fields: [game_id], references: [game_id])
+  categorye           Categories @relation(fields: [categorye_id], references: [category_id])
+}
+
+model Country {
+  country_id   Int           @id @default(autoincrement())
+  country_name String
+  createdAt    DateTime      @default(now())
+  updateDate   DateTime      @updatedAt
+  Games_price  Games_price[]
+}
