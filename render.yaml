@@ -1,6 +1,6 @@
 services:
   - name: deploy and population
-    buildCommand: npm install
+    buildCommand: npm install && npx prisma migrate deploy
     startCommand: npm start
     env: 
       - key: DATABASE_URL
