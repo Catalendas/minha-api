@@ -36,6 +36,8 @@ export class GameController {
             orderBy.game_name = "asc"
         } else if (game_order === "z-a") {
             orderBy.game_name = "desc"
+        } else if (game_order === "updatedAt") {
+            orderBy.updateDate = "desc"
         } else {
             orderBy.game_price = "asc"
         }
@@ -68,9 +70,12 @@ export class GameController {
                 },
                 game_name,
             },
-            orderBy,
-            take: Number(take),
+            orderBy: [
+                orderBy,
+                { game_id: 'asc'}
+            ],
             skip: (Number(skip) - 1) * Number(take),
+            take: Number(take),
         })
         return res.json({games, totalPages})
     }
