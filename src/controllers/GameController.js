@@ -43,7 +43,7 @@ export class GameController {
         }
 
         if (game_search) {
-            game_name.contains = String(game_search)
+            game_name.startsWith = String(game_search)
             game_name.mode = "insensitive"
         }
 
