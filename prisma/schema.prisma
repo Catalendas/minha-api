@@ -13,60 +13,104 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Games {
-  game_id          Int                @id @default(autoincrement())
-  game_name        String
-  game_image_url   String
-  game_price Float
-  createdAt        DateTime           @default(now())
-  updateDate       DateTime           @updatedAt
-  Games_price      Games_price[]
-  Games_categories Games_categories[]
-}
-
-model Games_price {
-  game_price_id Int             @id @default(autoincrement())
-  game_price    Float
-  createdAt     DateTime        @default(now())
-  game_eneba_url   String
-  game_isActive    Boolean      @default(true)
-  country_id    Int
-  game_id       Int
-  timeframe_id  Int
-  country       Country         @relation(fields: [country_id], references: [country_id])
-  game          Games           @relation(fields: [game_id], references: [game_id])
-  timeframe     Games_timeframe @relation(fields: [timeframe_id], references: [timeframe_id])
-}
-
-model Games_timeframe {
-  timeframe_id          Int           @id @default(autoincrement())
-  timeframe_description String
-  Games_price           Games_price[]
-}
-
-model Categories {
-  category_id       Int                @id @default(autoincrement())
-  category_name     String
+model Products {
+  product_id        Int                @id @default(autoincrement())
+  product_name      String
+  product_image_url String
+  product_price     Float
   createdAt         DateTime           @default(now())
-  updateDate        DateTime           @updatedAt
-  category_isActive Boolean            @default(true)
-  Games_categories  Games_categories[]
+  updatedAt         DateTime           @updatedAt
+  type_id           Int
+  Products_price    Products_price[]
+  Products_gender   Products_gender[]
+  Product_type      Product_type       @relation(fields: [type_id], references: [type_id])
+  Product_plataform  Product_plataform[]
 }
 
-model Games_categories {
-  games_categories_id Int        @id @default(autoincrement())
-  game_id             Int
-  categorye_id        Int
-  createdAt           DateTime   @default(now())
-  updateDate          DateTime   @updatedAt
-  game                Games      @relation(fields: [game_id], references: [game_id])
-  categorye           Categories @relation(fields: [categorye_id], references: [category_id])
+model Products_price {
+  product_price_id Int                @id @default(autoincrement())
+  product_price    Float
+  createdAt        DateTime           @default(now())
+  product_url      String
+  product_isActive Boolean            @default(true)
+  country_id       Int
+  product_id       Int
+  timeframe_id     Int
+  country          Country            @relation(fields: [country_id], references: [country_id])
+  Product          Products           @relation(fields: [product_id], references: [product_id])
+  timeframe        Products_timeframe @relation(fields: [timeframe_id], references: [timeframe_id])
+}
+
+model Products_timeframe {
+  timeframe_id          Int              @id @default(autoincrement())
+  timeframe_description String
+  products_price        Products_price[]
+}
+
+model Gender {
+  gender_id           Int               @id @default(autoincrement())
+  gender_name         String
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  gender_isActive     Boolean           @default(true)
+  type_id             Int
+  Product_type        Product_type      @relation(fields: [type_id], references: [type_id])
+  Products_categories Products_gender[]
+}
+
+model Products_gender {
+  products_categories_id Int      @id @default(autoincrement())
+  product_id             Int
+  gender_id              Int
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  Product                Products @relation(fields: [product_id], references: [product_id])
+  Gender                 Gender   @relation(fields: [gender_id], references: [gender_id])
 }
 
 model Country {
-  country_id   Int           @id @default(autoincrement())
-  country_name String
-  createdAt    DateTime      @default(now())
-  updateDate   DateTime      @updatedAt
-  Games_price  Games_price[]
+  country_id     Int              @id @default(autoincrement())
+  country_name   String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Products_price Products_price[]
+}
+
+model Product_type {
+  type_id                Int                      @id @default(autoincrement())
+  type_description       String
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  Products               Products[]
+  Gender                 Gender[]
+  Product_type_plataform Product_type_plataform[]
+}
+
+model Product_type_plataform {
+  product_type_plataform Int          @id @default(autoincrement())
+  product_type_id        Int
+  plataform_id           Int
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+  Product_type           Product_type @relation(fields: [product_type_id], references: [type_id])
+  Plataform              Plataform    @relation(fields: [plataform_id], references: [plataform_id])
+}
+
+model Plataform {
+  plataform_id           Int                      @id @default(autoincrement())
+  plataform_description  String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  Product_type_plataform Product_type_plataform[]
+  Product_plataform       Product_plataform[]
+}
+
+model Product_plataform {
+  product_plataform_id Int       @id @default(autoincrement())
+  product_id           Int
+  plataform_id         Int
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  Product              Products  @relation(fields: [product_id], references: [product_id])
+  Plataform            Plataform @relation(fields: [plataform_id], references: [plataform_id])
 }

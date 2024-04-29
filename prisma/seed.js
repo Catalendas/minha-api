@@ -1,67 +1,67 @@
 import { prisma } from "./index.js"
 
 async function main() {
-    const january = await prisma.games_timeframe.create({
+    const january = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Janeiro"
         }
     })
-    const february = await prisma.games_timeframe.create({
+    const february = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Fevereiro"
         }
     })
-    const march = await prisma.games_timeframe.create({
+    const march = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Março"
         }
     })
-    const april = await prisma.games_timeframe.create({
+    const april = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Abril"
         }
     })
-    const may = await prisma.games_timeframe.create({
+    const may = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Maio"
         }
     })
-    const june = await prisma.games_timeframe.create({
+    const june = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Junho"
         }
     })
-    const july = await prisma.games_timeframe.create({
+    const july = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Julho"
         }
     })
-    const august = await prisma.games_timeframe.create({
+    const august = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Agosto"
         }
     })
-    const september = await prisma.games_timeframe.create({
+    const september = await prisma.products_timeframe.create({
         data: {
             timeframe_description: "Setembro"
         }
     })
 
-    const october = await prisma.games_timeframe.create({
+    const october = await prisma.products_timeframe.create({
         data: {
 
             timeframe_description: "Outubro"
         }
     })
 
-    const november = await prisma.games_timeframe.create({
+    const november = await prisma.products_timeframe.create({
         data: {
 
             timeframe_description: "Novembro"
         }
     })
 
-    const december = await prisma.games_timeframe.create({
+    const december = await prisma.products_timeframe.create({
         data: {
 
             timeframe_description: "Dezembro"

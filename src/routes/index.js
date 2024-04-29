@@ -1,9 +1,13 @@
 import { Router } from "express"
-import { gamesRouter } from "./games.routes.js"
-import { categoriesRouter } from "./categories.routes.js"
+import { productRouter } from "./product.routes.js"
+import { gendersRouter } from "./genders.routes.js"
+import { plataformRouter } from "./plataforms.routes.js"
+import { productTypesRouter } from "./productTypes.routes.js"
 
 export const router = Router()
 
-router.use("/games", gamesRouter)
-router.use("/categories", categoriesRouter)
+router.use("/products", productRouter)
+router.use("/genders", gendersRouter)
+router.use("/plataform", plataformRouter)
+router.use("/producttypes", productTypesRouter)
 
