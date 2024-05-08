@@ -2,7 +2,6 @@ import { prisma } from "../../prisma/index.js";
 
 export class ProductController {
     async index(req, res) {
-
         const { 
             product_search, 
             gender_name, 
@@ -13,10 +12,7 @@ export class ProductController {
             skip, 
             take 
         } = req.query
-
-        const totalproducts = await prisma.products.count()
-        const totalPages = Math.ceil(totalproducts / take)
-
+    
         let gender
         let type
         let plataform
@@ -28,18 +24,18 @@ export class ProductController {
         if (gender_name) {
             gender = gender_name.split(",")
         }
-
+    
         if (productType) {
             type = productType.split(",")
         }
-
+    
         if (productPlataform) {
             plataform = productPlataform.split(",")
         }
-
+    
         if (product_variation) {
             productVariation = product_variation.split(",").map((e, i, arr) => parseFloat(e))
-
+    
             if (productVariation[0]) {
                 product_price.gte = productVariation[0]
             }
@@ -60,13 +56,44 @@ export class ProductController {
         } else {
             orderBy.product_price = "asc"
         }
-
+    
         if (product_search) {
             product_name.startsWith = String(product_search)
             product_name.mode = "insensitive"
         }
-
-
+    
+        // Conta o total de produtos baseado nos filtros
+        const totalProducts = await prisma.products.count({
+            where: {
+                product_price,
+                Products_gender: {
+                    some: {
+                        Gender: {
+                            gender_name: {
+                                in: gender ? gender : undefined
+                            }
+                        }
+                    }
+                },
+                Product_type: {
+                    type_description: type ? type : undefined
+                },
+                Product_plataform: {
+                    some: {
+                        Plataform: {
+                            plataform_description: {
+                                in: plataform ? plataform : undefined
+                            }
+                        }
+                    }
+                },
+                product_name,
+            }
+        });
+    
+        const totalPages = Math.ceil(totalProducts / take);
+    
+        // Realiza a consulta paginada
         let products = await prisma.products.findMany({
             include: {
                 Products_price: {
@@ -112,8 +139,9 @@ export class ProductController {
             ],
             skip: (Number(skip) - 1) * Number(take),
             take: Number(take),
-        })
-        return res.json({products, totalPages})
+        });
+    
+        return res.json({products, totalPages});
     }
 
     async create(req, res) {
@@ -313,6 +341,11 @@ export class ProductController {
                 Products_price: {
                     include: {
                         country: true
+                    }
+                },
+                Product_plataform: {
+                    include: {
+                        Plataform: true
                     }
                 }
             }
