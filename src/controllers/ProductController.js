@@ -17,6 +17,12 @@ export class ProductController {
         let type
         let plataform
         let productVariation
+
+        // if (!product_variation) {
+        //     product_variation = [0.01, ]
+        // }
+
+        // console.log(product_variation)
         
         const product_name = {}
         const product_price = {}
@@ -43,7 +49,9 @@ export class ProductController {
             if (productVariation[1]) {
                 product_price.lte = productVariation[1]
             }
-        }      
+        } else {
+            product_price.gte = 0.01
+        }     
         
         if (product_order === "price-highest") {
             orderBy.product_price = "desc"
