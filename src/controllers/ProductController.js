@@ -49,10 +49,9 @@ export class ProductController {
             if (productVariation[1]) {
                 product_price.lte = productVariation[1]
             }
-        }     
-        // else {
-        //     product_price.gte = 0.01
-        // } 
+        } else {
+            product_price.gte = 0.01
+        } 
         
         if (product_order === "price-highest") {
             orderBy.product_price = "desc"
