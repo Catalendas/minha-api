@@ -49,9 +49,10 @@ export class ProductController {
             if (productVariation[1]) {
                 product_price.lte = productVariation[1]
             }
-        } else {
-            product_price.gte = 0.01
         }     
+        // else {
+        //     product_price.gte = 0.01
+        // } 
         
         if (product_order === "price-highest") {
             orderBy.product_price = "desc"
@@ -168,7 +169,9 @@ export class ProductController {
         let productPrice
 
         let productSplit = product_name.split(" ")
+
         productSplit.pop()
+
         let productRename = productSplit.join(" ")
 
         let productTypeExist = await prisma.product_type.findFirst({
@@ -204,13 +207,16 @@ export class ProductController {
                 })
             }
 
-            let productPriceUpdate = await prisma.products.update({
-                data: {
-                    product_price
-                }, where: {
-                    product_id: productsExist.product_id
-                }
-            })
+            if (product_price !== 0) {
+                await prisma.products.update({
+                    data: {
+                        product_price
+                    }, where: {
+                        product_id: productsExist.product_id
+                    }
+                })
+            }
+
 
             productPrice = await prisma.products_price.create({
                 data: {
