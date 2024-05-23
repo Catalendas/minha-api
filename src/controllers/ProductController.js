@@ -206,15 +206,15 @@ export class ProductController {
                 })
             }
 
-            if (product_price !== 0) {
-                await prisma.products.update({
-                    data: {
-                        product_price
-                    }, where: {
-                        product_id: productsExist.product_id
-                    }
-                })
-            }
+            // if (product_price !== 0) {
+            await prisma.products.update({
+                data: {
+                    product_price
+                }, where: {
+                    product_id: productsExist.product_id
+                }
+            })
+            // }
 
 
             productPrice = await prisma.products_price.create({
