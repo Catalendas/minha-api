@@ -27,6 +27,7 @@ export class ProductController {
         const product_name = {}
         const product_price = {}
         const orderBy = {}
+
         if (gender_name) {
             gender = gender_name.split(",")
         }
@@ -173,12 +174,14 @@ export class ProductController {
 
         let productRename = productSplit.join(" ")
 
+        // Verificando se o tipo protudo existe com base no tipo
         let productTypeExist = await prisma.product_type.findFirst({
             where: {
                 type_description: product_type
             }
         })
- 
+        
+        // Verificando se o produto existe com base no nome
         let productsExist = await prisma.products.findFirst({
             where: {
                 product_name: productRename
@@ -188,10 +191,12 @@ export class ProductController {
         let productType
         let plataform
 
+        // Formatando se o protudo está ativo
         const product_isActiveFormate = JSON.parse(product_isActive.toLowerCase())
 
         if (productsExist) {
 
+            // Verificando se o pais existe
             let countryExist = await prisma.country.findFirst({
                 where: {
                     country_name: product_country
@@ -205,18 +210,45 @@ export class ProductController {
                     }
                 })
             }
+            const values = await prisma.products_price.findMany({ where: { product_id: productsExist.product_id }, orderBy: {
+                createdAt: "desc"
+            }})
 
-            // if (product_price !== 0) {
+            const finalValuesAdded = values.reduce((red, obj) => {
+                if(!red.hasOwnProperty(obj.country_id)) {
+                    red[obj.country_id] = obj.product_price
+                } 
+                
+                return red
+            }, {})
+
+            finalValuesAdded[countryExist.country_id] = product_price
+
+            let productPrice
+
+            const filteredFinalValues = Object.values(finalValuesAdded).filter((number) => number !== 0)
+            if (filteredFinalValues.length) {
+                const minValueFiltered = Math.min(...filteredFinalValues)
+
+                if (product_price > minValueFiltered || minValueFiltered !== 0) {
+                    productPrice = minValueFiltered
+                } else {
+                    productPrice = product_price
+                }
+            } else {
+                productPrice = 0
+            }     
+
+            // Atulizando o preço atual do jogo
             await prisma.products.update({
                 data: {
-                    product_price
+                    product_price: productPrice
                 }, where: {
                     product_id: productsExist.product_id
                 }
             })
-            // }
 
-
+            // Criando a variação do preço
             productPrice = await prisma.products_price.create({
                 data: {
                     product_price,
@@ -238,7 +270,6 @@ export class ProductController {
                 }
             })
         }
-
 
 
         const product = await prisma.products.create({
@@ -274,7 +305,6 @@ export class ProductController {
                 product_url
             }
         })
-
 
         plataform_name.forEach(async (e) => {
             let plataformExist = await prisma.plataform.findFirst({
