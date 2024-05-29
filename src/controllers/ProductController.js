@@ -242,7 +242,8 @@ export class ProductController {
             // Atulizando o preço atual do jogo
             await prisma.products.update({
                 data: {
-                    product_price: productPrice
+                    product_price: productPrice,
+                    product_image_url
                 }, where: {
                     product_id: productsExist.product_id
                 }
