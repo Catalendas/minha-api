@@ -110,36 +110,36 @@ export class ProductController {
                         country: true
                     }
                 },
-                Products_gender: true,
-                Product_plataform: {
-                    include: {
-                        Plataform: true
-                    }
-                }
+                // Products_gender: true,
+                // Product_plataform: {
+                //     include: {
+                //         Plataform: true
+                //     }
+                // }
             },
             where: {
                 product_price,
-                Products_gender: {
-                    some: {
-                        Gender: {
-                            gender_name: {
-                                in: gender ? gender : undefined
-                            }
-                        }
-                    }
-                },
+                // Products_gender: {
+                //     some: {
+                //         Gender: {
+                //             gender_name: {
+                //                 in: gender ? gender : undefined
+                //             }
+                //         }
+                //     }
+                // },
                 Product_type: {
                     type_description: type ? type : undefined
                 },
-                Product_plataform: {
-                    some: {
-                        Plataform: {
-                            plataform_description: {
-                                in: plataform ? plataform : undefined
-                            }
-                        }
-                    }
-                },
+                // Product_plataform: {
+                //     some: {
+                //         Plataform: {
+                //             plataform_description: {
+                //                 in: plataform ? plataform : undefined
+                //             }
+                //         }
+                //     }
+                // },
                 product_name,
             },
             orderBy: [
