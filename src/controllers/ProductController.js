@@ -307,68 +307,68 @@ export class ProductController {
             }
         })
 
-        plataform_name.forEach(async (e) => {
-            let plataformExist = await prisma.plataform.findFirst({
-                where: {
-                    plataform_description: e
-                }
-            })
+        // plataform_name.forEach(async (e) => {
+        //     let plataformExist = await prisma.plataform.findFirst({
+        //         where: {
+        //             plataform_description: e
+        //         }
+        //     })
 
-            if (!plataformExist) {
-                plataformExist = await prisma.plataform.create({
-                    data: {
-                        plataform_description: e
-                    }
-                })
-            }
+        //     if (!plataformExist) {
+        //         plataformExist = await prisma.plataform.create({
+        //             data: {
+        //                 plataform_description: e
+        //             }
+        //         })
+        //     }
 
-            const productTypePlataform = await prisma.product_type_plataform.create({
-                data: {
-                    product_type_id: productTypeExist.type_id,
-                    plataform_id: plataformExist.plataform_id
-                }
-            })
+        //     const productTypePlataform = await prisma.product_type_plataform.create({
+        //         data: {
+        //             product_type_id: productTypeExist.type_id,
+        //             plataform_id: plataformExist.plataform_id
+        //         }
+        //     })
 
-            const productPlataform = await prisma.product_plataform.create({
-                data: {
-                    plataform_id: plataformExist.plataform_id,
-                    product_id: product.product_id
-                }
-            })
-        })
+        //     const productPlataform = await prisma.product_plataform.create({
+        //         data: {
+        //             plataform_id: plataformExist.plataform_id,
+        //             product_id: product.product_id
+        //         }
+        //     })
+        // })
 
-        product_gender.forEach(async (e) => {
+        // product_gender.forEach(async (e) => {
 
-            const genderExist = await prisma.gender.findFirst({
-                where: {
-                    gender_name: e
-                }
-            })
+        //     const genderExist = await prisma.gender.findFirst({
+        //         where: {
+        //             gender_name: e
+        //         }
+        //     })
 
-            if (!genderExist) {
-                const catetegories = await prisma.gender.create({
-                    data: {
-                        gender_name: e,
-                        type_id: productTypeExist.type_id
-                    }
-                })
+        //     if (!genderExist) {
+        //         const catetegories = await prisma.gender.create({
+        //             data: {
+        //                 gender_name: e,
+        //                 type_id: productTypeExist.type_id
+        //             }
+        //         })
 
-                const products_genders = await prisma.products_gender.create({
-                    data: {
-                        gender_id: catetegories.gender_id,
-                        product_id: product.product_id,
-                    }
-                })
-            } else {
-                const products_genders = await prisma.products_gender.create({
-                    data: {
-                        gender_id: genderExist.gender_id,
-                        product_id: product.product_id,
-                    }
-                })
-            }
+        //         const products_genders = await prisma.products_gender.create({
+        //             data: {
+        //                 gender_id: catetegories.gender_id,
+        //                 product_id: product.product_id,
+        //             }
+        //         })
+        //     } else {
+        //         const products_genders = await prisma.products_gender.create({
+        //             data: {
+        //                 gender_id: genderExist.gender_id,
+        //                 product_id: product.product_id,
+        //             }
+        //         })
+        //     }
            
-        })
+        // })
 
         return res.status(201).json({})
     }
