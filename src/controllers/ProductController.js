@@ -62,6 +62,8 @@ export class ProductController {
             orderBy.product_name = "desc"
         } else if (product_order === "updatedAt") {
             orderBy.updatedAt = "desc"
+        } else if (product_order === "includeDate") {
+            orderBy.createdAt = "desc"
         } else {
             orderBy.product_price = "asc"
         }
